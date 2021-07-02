@@ -3,7 +3,7 @@ import { StatusBar } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import { ThemeProvider } from 'styled-components';
 import light from './global/styles/theme';
-import { Dashboard } from './screens/Dashboard';
+import { Register } from './screens/Register';
 import {
   useFonts,
   Poppins_400Regular,
@@ -22,7 +22,7 @@ export default function App() {
   }
   return (
     <ThemeProvider theme={light}>
-      <Dashboard />
+      <Register />
     </ThemeProvider>
   );
 }

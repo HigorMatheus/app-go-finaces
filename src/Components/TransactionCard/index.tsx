@@ -14,18 +14,18 @@ type Category = {
   icon: string;
   name: string;
 };
-interface Transaction {
+export interface TransactionCardProps {
   type: 'positive' | 'negative';
   title: string;
   amount: string;
   category: Category;
   data: string;
 }
-interface TransactionCardProps {
-  transaction: Transaction;
+interface CardPropsData {
+  transaction: TransactionCardProps;
 }
 
-export function TransactionCard({ transaction }: TransactionCardProps) {
+export function TransactionCard({ transaction }: CardPropsData) {
   return (
     <Container>
       <Title>{transaction.title}</Title>

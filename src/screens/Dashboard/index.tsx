@@ -1,7 +1,9 @@
 import React from 'react';
-import { getBottomSpace } from 'react-native-iphone-x-helper';
 import { HighlightCard } from '../../Components/HighlightCard';
-import { TransactionCard } from '../../Components/TransactionCard';
+import {
+  TransactionCardProps,
+  TransactionCard,
+} from '../../Components/TransactionCard';
 
 import {
   Container,
@@ -19,9 +21,14 @@ import {
   TransitionsList,
 } from './styles';
 
+export interface TransactionProps extends TransactionCardProps {
+  id: string;
+}
+
 export function Dashboard() {
-  const data = [
+  const data: TransactionProps[] = [
     {
+      id: String(new Date().getSeconds()),
       type: 'positive',
       data: '25/10/2021',
       title: 'venda de website',
@@ -32,6 +39,7 @@ export function Dashboard() {
       },
     },
     {
+      id: String(new Date().getSeconds()),
       type: 'negative',
       data: '25/10/2021',
       title: 'venda de website',
@@ -42,6 +50,7 @@ export function Dashboard() {
       },
     },
     {
+      id: String(new Date().getSeconds()),
       type: 'positive',
       data: '25/10/2021',
       title: 'venda de website',
@@ -95,13 +104,8 @@ export function Dashboard() {
         <Title>listagem</Title>
         <TransitionsList
           data={data}
-          renderItem={({ item, index }) => (
-            <TransactionCard key={index.toString()} transaction={item} />
-          )}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            paddingBottom: getBottomSpace(),
-          }}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => <TransactionCard transaction={item} />}
         />
       </Transitions>
     </Container>
