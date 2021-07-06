@@ -1,9 +1,9 @@
 import React from 'react';
-import { HighlightCard } from '../../Components/HighlightCard';
+import { HighlightCard } from '../../components/HighlightCard';
 import {
   TransactionCardProps,
   TransactionCard,
-} from '../../Components/TransactionCard';
+} from '../../components/TransactionCard';
 
 import {
   Container,
@@ -19,6 +19,7 @@ import {
   Transitions,
   Title,
   TransitionsList,
+  LogoutButton,
 } from './styles';
 
 export interface TransactionProps extends TransactionCardProps {
@@ -76,7 +77,9 @@ export function Dashboard() {
               <UserName>Higor</UserName>
             </User>
           </UserInfo>
-          <Icon name="power" />
+          <LogoutButton onPress={() => {}}>
+            <Icon name="power" />
+          </LogoutButton>
         </UserWrapper>
       </Header>
       <HighlightCards>
