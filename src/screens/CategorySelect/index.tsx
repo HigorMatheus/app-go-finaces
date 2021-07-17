@@ -16,14 +16,14 @@ import {
   Footer,
 } from './styles';
 
-interface Category {
+interface ICategory {
   key: string;
   name: string;
 }
 
 interface Props {
-  category: Category;
-  setCategory: (category: Category) => void;
+  category: ICategory;
+  setCategory: (category: ICategory) => void;
   closeSelectCategory: () => void;
 }
 
@@ -49,7 +49,7 @@ export function CategorySelect({
       <FlatList
         data={categories}
         style={{ flex: 1, width: '100%' }}
-        keyExtractor={item => item.key}
+        keyExtractor={(item) => item.key}
         renderItem={({ item }) => (
           <Category
             isActive={category.key === item.key}

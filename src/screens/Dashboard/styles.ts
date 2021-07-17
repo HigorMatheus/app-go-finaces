@@ -8,6 +8,7 @@ import {
 } from 'react-native-iphone-x-helper';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { TransactionProps } from '.';
+
 export const Container = styled.View`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.background};
@@ -89,6 +90,10 @@ export const TransitionsList = styled(
   contentContainerStyle: {
     paddingBottom: getBottomSpace(),
   },
-})`
-  margin-bottom: 16px;
+})``;
+
+export const LoadContainer = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
 `;
