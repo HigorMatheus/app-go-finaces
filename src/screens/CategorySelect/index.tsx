@@ -23,6 +23,7 @@ interface ICategory {
 
 interface Props {
   category: ICategory;
+  // eslint-disable-next-line no-unused-vars
   setCategory: (category: ICategory) => void;
   closeSelectCategory: () => void;
 }
@@ -32,7 +33,7 @@ export function CategorySelect({
   setCategory,
   closeSelectCategory,
 }: Props) {
-  const handleSelectCategory = useCallback((categoryItem: Category) => {
+  const handleSelectCategory = useCallback((categoryItem: ICategory) => {
     setCategory(categoryItem);
   }, []);
   const handleCloseSelectCategory = useCallback(() => {
@@ -49,7 +50,7 @@ export function CategorySelect({
       <FlatList
         data={categories}
         style={{ flex: 1, width: '100%' }}
-        keyExtractor={(item) => item.key}
+        keyExtractor={item => item.key}
         renderItem={({ item }) => (
           <Category
             isActive={category.key === item.key}
