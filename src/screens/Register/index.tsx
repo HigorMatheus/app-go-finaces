@@ -24,6 +24,7 @@ import {
   Fields,
   TransactionTypes,
 } from './styles';
+import { useAuth } from '../../hooks/auth';
 
 interface FormData {
   name: string;
@@ -38,10 +39,11 @@ const schema = Yup.object().shape({
 });
 
 export function Register() {
+  const { user } = useAuth();
   const [transactionType, setTransactionType] = useState('');
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
 
-  const dataKey = '@goFinances:transactions';
+  const dataKey = `@goFinances:transactions_user:${user.id}`;
 
   const [category, setCategory] = useState({
     key: 'category',

@@ -26,6 +26,7 @@ import {
   LogoutButton,
   LoadContainer,
 } from './styles';
+import { useAuth } from '../../hooks/auth';
 
 export interface TransactionProps extends TransactionCardProps {
   id: string;
@@ -51,24 +52,29 @@ export const Dashboard: React.FC = () => {
     {} as IHighlightDataProps,
   );
   const theme = useTheme();
-  const dataKey = '@goFinances:transactions';
+  const { signOut, user } = useAuth();
+  const dataKey = `@goFinances:transactions_user:${user.id}`;
 
   function getLastTransactionDate({
     collection,
     type,
   }: GetLastTransactionDateProps) {
-    // console.log('collection', collection);
+    const collectionFlittered = collection.filter(
+      transaction => transaction.type === type,
+    );
 
+    if (collectionFlittered.length === 0) {
+      return 0;
+    }
     const lastTransaction = Math.max.apply(
       Math,
-      collection
-        .filter(transaction => transaction.type === type)
-        .map(transaction => new Date(transaction.data).getTime()),
+      collectionFlittered.map(transaction =>
+        new Date(transaction.data).getTime(),
+      ),
     );
-    // console.log('lastTransaction', lastTransaction);
 
     const dateTransaction = new Date(lastTransaction);
-    // console.log(dateTransaction);
+
     const lastTransactionFormat = dateTransaction.toLocaleString('pt-BR', {
       day: '2-digit',
       month: 'long',
@@ -123,7 +129,10 @@ export const Dashboard: React.FC = () => {
       collection: transactionsData,
       type: 'negative',
     });
-    const totalInterval = `01 à ${lastTransactionExpensive}`;
+    const totalInterval =
+      lastTransactionExpensive === 0
+        ? 'Não há transações'
+        : `01 à ${lastTransactionExpensive}`;
 
     setHighlightData({
       entries: {
@@ -131,14 +140,20 @@ export const Dashboard: React.FC = () => {
           style: 'currency',
           currency: 'BRl',
         }),
-        date: lastTransactionEntries,
+        date:
+          lastTransactionEntries === 0
+            ? 'Não há transações'
+            : `Última entrada dia ${lastTransactionEntries}`,
       },
       expensive: {
         amount: expensiveTotal.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRl',
         }),
-        date: lastTransactionExpensive,
+        date:
+          lastTransactionExpensive === 0
+            ? 'Não há transações'
+            : `Última saída dia ${lastTransactionExpensive}`,
       },
       total: {
         amount: totalValue.toLocaleString('pt-BR', {
@@ -172,19 +187,15 @@ export const Dashboard: React.FC = () => {
               <UserInfo>
                 <Photo
                   source={{
-                    uri: 'https://avatars.githubusercontent.com/u/53712358?v=4',
+                    uri: user.photo,
                   }}
                 />
                 <User>
                   <UserGreeting>Olá, </UserGreeting>
-                  <UserName>Higor</UserName>
+                  <UserName>{user.name}</UserName>
                 </User>
               </UserInfo>
-              <LogoutButton
-                onPress={() => {
-                  console.log(' teste');
-                }}
-              >
+              <LogoutButton onPress={signOut}>
                 <Icon name="power" />
               </LogoutButton>
             </UserWrapper>
@@ -194,17 +205,13 @@ export const Dashboard: React.FC = () => {
               type="up"
               title="Entradas"
               amount={highlightData.entries.amount}
-              lastTransaction={`Última entrada dia ${highlightData.entries.date}`}
+              lastTransaction={highlightData.entries.date}
             />
             <HighlightCard
               type="down"
               title="Saídas"
               amount={highlightData.expensive.amount}
-              lastTransaction={
-                highlightData.expensive.date
-                  ? `Última entrada dia ${highlightData.expensive.date}`
-                  : ''
-              }
+              lastTransaction={highlightData.expensive.date}
             />
             <HighlightCard
               type="total"
