@@ -39,17 +39,17 @@ const schema = Yup.object().shape({
 });
 
 export function Register() {
+  const navigation = useNavigation();
   const { user } = useAuth();
   const [transactionType, setTransactionType] = useState('');
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
 
-  const dataKey = `@goFinances:transactions_user:${user.id}`;
+  const dataKey = `@goFinances:transactions_user`;
 
   const [category, setCategory] = useState({
     key: 'category',
     name: 'Categoria',
   });
-  const navigation = useNavigation();
 
   const {
     control,
@@ -153,6 +153,7 @@ export function Register() {
             </TransactionTypes>
 
             <CategorySelectButton
+              testID="button-category"
               title={category.name}
               onPress={handleOpenSelectCategoryModal}
             />
@@ -161,7 +162,7 @@ export function Register() {
           <Button title="Enviar" onPress={handleSubmit(handleRegister)} />
         </Form>
 
-        <Modal visible={categoryModalOpen}>
+        <Modal testID="modal-category" visible={categoryModalOpen}>
           <CategorySelect
             category={category}
             setCategory={setCategory}
